@@ -18,5 +18,5 @@
 >>> {'id': 1, 'title': 'Atomic Habits', 'author': 'James Clear', 'publication_year': 2018}
 
 ## Second Book Record
->>> second_book.title = "The Hitchhiker"
+>>> second_book.title = "Nineteen Eighty-Four"
 >>> second_book.save()
