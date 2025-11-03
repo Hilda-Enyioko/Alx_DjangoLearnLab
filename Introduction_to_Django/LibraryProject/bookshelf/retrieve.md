@@ -8,7 +8,7 @@
 >>> first_book = Book.objects.all()[0]
 
 >>> """ 0R """
->>> second_book = Book.objects.get(publication_year=1989)
+>>> second_book = Book.objects.get(publication_year=1984)
 >>> print(f"Found book: {second_book.title}")
 
 >>>
