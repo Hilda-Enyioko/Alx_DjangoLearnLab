@@ -5,6 +5,14 @@
 >>> Book.objects.all().values()
 <QuerySet [{'id': 1, 'title': 'Atomic Habits', 'author': 'James Clear', 'publication_year': 2018}]>
 
+OR 
+
+>>> Book.objects.create(
+  title='The Lord of the Rings'
+  author='J.R.R. Tolkien',
+  publication_year=1954
+)
+
 ## Create: Adding Multiple Books via a Loop
 >>> book1 = Book(title='The Hitchhiker\'s Guide to the Galaxy', author='Douglas Adams', publication_year=1979)
 >>> book2 = Book(title='1984', author='George Orwell', publication_year=1949)
