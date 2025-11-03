@@ -1,5 +1,6 @@
 # Delete: Removing a Record
 
+from bookshelf.models import Book
 >>> """
 >>> The index 5 was out of bounds in the interactive session due to zero-based indexing and data changes
 >>> unwanted_book = Book.objects.all()[5] 
