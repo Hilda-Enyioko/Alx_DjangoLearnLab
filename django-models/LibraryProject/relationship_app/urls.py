@@ -1,4 +1,4 @@
-from django import views
+from . import views
 from django.urls import path
 from .views import UserLoginView, UserLogoutView, list_books, LibraryDetailView
 from .admin_view import admin_view
