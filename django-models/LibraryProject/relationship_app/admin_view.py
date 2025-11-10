@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.shortcuts import render
 from .utils import login_required
 
-@login_required
 @role_required('Admin')
+@login_required
 def admin_view(request):
     return render(request, 'relationship_app/admin_view.html')
