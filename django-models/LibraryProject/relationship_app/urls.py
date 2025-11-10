@@ -1,4 +1,4 @@
-from atexit import register
+from django import views
 from django.urls import path
 from .views import UserLoginView, UserLogoutView, list_books, LibraryDetailView
 
@@ -9,5 +9,5 @@ urlpatterns = [
     # Authentication routes
     path('login/', UserLoginView.as_view(template_name='relationship_app/login.html'), name='login'),
     path('logout/', UserLogoutView.as_view(template_name='relationship_app/logout.html'), name='logout'),
-    path('register/', register, name='register'),
+    path('register/', views.register, name='register'),
 ]
