@@ -191,3 +191,5 @@ X_FRAME_OPTIONS = "DENY"
 # Ensure cookies cannot be accessed via JavaScript
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = False  # Must remain False for CSRF to work
+
+["SECURE_PROXY_SSL_HEADER", "HTTP_X_FORWARDED_PROTO"]
