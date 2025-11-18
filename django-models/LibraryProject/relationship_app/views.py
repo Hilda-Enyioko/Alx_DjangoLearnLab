@@ -4,6 +4,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import permission_required
 
 # Create your views here.
 from .models import Book
@@ -75,3 +76,19 @@ def member_view(request):
 @user_passes_test(is_librarian)
 def librarian_view(request):
     return render(request, 'relationship_app/librarian_view.html')
+
+# Use @permission_required decorator for book management views
+@login_required
+@permission_required('relationship_app.can_add_book', raise_exception=True)
+def add_book(request):
+    return render(request, 'relationship_app/add_book.html')
+
+@login_required
+@permission_required('relationship_app.can_change_book', raise_exception=True)
+def edit_book(request):
+    return render(request, 'relationship_app/edit_book.html')
+
+@login_required
+@permission_required('relationship_app.can_delete_book', raise_exception=True)
+def delete_book(request):
+    return render(request, 'relationship_app/delete_book.html')
