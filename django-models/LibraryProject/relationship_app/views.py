@@ -3,6 +3,8 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from relationship_app.utils import role_required
 
 # Create your views here.
 from .models import Book
@@ -46,3 +48,21 @@ def register(request):
         form = UserCreationForm()
     
     return render(request, 'relationship_app/register.html', {'form': form})
+
+# An ‘Admin’ view for users with the ‘Admin’ role
+@login_required
+@role_required('Admin')
+def admin_view(request):
+    return render(request, 'relationship_app/admin_view.html')
+
+# A ‘Member’ view for users with the ‘Member’ role
+@login_required
+@role_required('Member')
+def member_view(request):
+    return render(request, 'relationship_app/member_view.html')
+
+# A ‘Librarian’ view accessible only to users identified as ‘Librarians’
+@login_required
+@role_required('Librarian')
+def librarian_view(request):
+    return render(request, 'relationship_app/librarian_view.html')
