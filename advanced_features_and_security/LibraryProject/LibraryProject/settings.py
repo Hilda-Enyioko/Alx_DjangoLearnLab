@@ -10,6 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+# SECURITY NOTES:
+# - DEBUG = False disables Django error pages in production.
+# - SECURE_CONTENT_TYPE_NOSNIFF prevents MIME sniffing.
+# - X_FRAME_OPTIONS avoids clickjacking attacks.
+# - CSRF_COOKIE_SECURE + SESSION_COOKIE_SECURE ensure cookies sent over HTTPS.
+# - ORM queries prevent SQL injection by parameterizing inputs.
+# - CSRF tokens protect POST forms from unauthorized requests.
+# - CSP headers prevent malicious external scripts from loading.
+
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,7 +36,7 @@ AUTH_USER_MODEL = 'bookshelf.CustomUser'
 SECRET_KEY = 'django-insecure-&#x$+y!!ntkm=ot0#rq1k368-lf75&+onayz*(k%js*&8qi#$f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False     # Disable debug in production
 
 ALLOWED_HOSTS = ['*']
 
@@ -126,3 +136,25 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Prevent MIME type sniffing
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Prevent reflected XSS attacks
+SECURE_BROWSER_XSS_FILTER = True
+
+# Prevent your site from being rendered in an iframe
+X_FRAME_OPTIONS = "DENY"
+
+# Cookies should only be sent over HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Content Security Policy (via manual header or middleware)
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'",)
+
+INSTALLED_APPS += ["csp"]
+
+MIDDLEWARE.insert(0, "csp.middleware.CSPMiddleware")
