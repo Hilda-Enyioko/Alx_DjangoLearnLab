@@ -158,3 +158,36 @@ CSP_STYLE_SRC = ("'self'",)
 INSTALLED_APPS += ["csp"]
 
 MIDDLEWARE.insert(0, "csp.middleware.CSPMiddleware")
+
+# ================================
+# SECURITY SETTINGS FOR PRODUCTION
+# ================================
+
+# Redirect all HTTP requests to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# Enforce HTTPS for one year (recommended for production)
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+
+# Apply HSTS to all subdomains
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+# Allow your site to be included in browser preload lists
+SECURE_HSTS_PRELOAD = True
+
+# Cookies sent only over HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Prevent MIME-type sniffing
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable basic browser XSS protection
+SECURE_BROWSER_XSS_FILTER = True
+
+# Prevent the site from being displayed inside an iframe (anti-clickjacking)
+X_FRAME_OPTIONS = "DENY"
+
+# Ensure cookies cannot be accessed via JavaScript
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = False  # Must remain False for CSRF to work
