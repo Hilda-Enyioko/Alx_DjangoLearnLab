@@ -3,7 +3,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import permission_required
 from .models import Book
-from .forms import ExampleForm
+from .forms import ExampleForm, BookForm
 from django.views.decorators.csrf import csrf_protect
 
 def search_books(request):
