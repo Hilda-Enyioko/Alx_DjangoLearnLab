@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from rest_framework import generics, filters
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.exceptions import ValidationError
 from django_filters import rest_framework as filters
 from .models import Book, Author
@@ -18,9 +19,9 @@ class ListView(generics.ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     
     # Add DRF filter functionality
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [SearchFilter, OrderingFilter]
     filterset_fields = ['title', 'author', 'publication_year']
-    search_fields = ['title', 'author']
+    search_fields = ['title']
     ordering_fields = ['publication_year', 'title']
 
 # A DetailView for retrieving a single book by ID.
@@ -34,8 +35,8 @@ class DetailView(generics.RetrieveAPIView):
 class CreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    # Permission check to ensure only authorized and authenticated users can create a book.
-    permission_classes = [IsAdminUser, IsAuthenticated]
+    # Permission check to ensure only authenticated users can create a book.
+    permission_classes = [IsAuthenticated]
     
     # Custom behavior to ensure form submission and data validation is handled properly.
     def perform_create(self, serializer):
@@ -55,8 +56,8 @@ class CreateView(generics.CreateAPIView):
 class UpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    # Permission check to ensure only authorized and authenticated users can update a book.
-    permission_classes = [IsAdminUser, IsAuthenticated]
+    # Permission check to ensure only authenticated users can update a book.
+    permission_classes = [IsAuthenticated]
     
     # Custom behavior to ensure form submission and data validation is handled properly.
     def perform_update(self, serializer):
@@ -77,5 +78,5 @@ class DeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     
-    # Permission check to ensure only authorized and authenticated users can delete a book.
-    permission_classes = [IsAdminUser, IsAuthenticated]
+    # Permission check to ensure only authenticated users can delete a book.
+    permission_classes = [IsAuthenticated]
