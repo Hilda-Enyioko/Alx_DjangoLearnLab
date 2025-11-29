@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser
 from rest_framework.exceptions import ValidationError
+from django_filters import rest_framework as filters
 from .models import Book, Author
 from .serializers import BookSerializer, AuthorSerializer
 
