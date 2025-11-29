@@ -19,9 +19,9 @@ class ListView(generics.ListAPIView):
     
     # Add DRF filter functionality
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['title', 'author', 'published_year']
+    filterset_fields = ['title', 'author', 'publication_year']
     search_fields = ['title', 'author']
-    ordering_fields = ['published_year', 'title']
+    ordering_fields = ['publication_year', 'title']
 
 # A DetailView for retrieving a single book by ID.
 class DetailView(generics.RetrieveAPIView):
