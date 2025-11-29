@@ -9,6 +9,10 @@ from .models import Book, Author
 class BookAPITestCase(APITestCase):
 
     def setUp(self):
+        # Create a user for authenticated tests
+        self.user = User.objects.create_user(username="testuser", password="password123")
+        self.client.login(username="testuser", password="password123")
+        
         # Create an author
         self.author = Author.objects.create(name="Author A")
 
@@ -24,9 +28,6 @@ class BookAPITestCase(APITestCase):
             author=self.author,
             publication_year=2025
         )
-
-        # Create a user for authenticated tests
-        self.user = User.objects.create_user(username="testuser", password="password123")
         
         # Endpoints
         self.list_url = reverse("book-list")
