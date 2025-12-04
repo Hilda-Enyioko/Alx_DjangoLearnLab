@@ -35,3 +35,16 @@ This project implements user authentication using Django’s built-in auth views
 - Add comment: `/post/<post_id>/comments/new/`
 - Edit comment: `/comment/<comment_id>/edit/`
 - Delete comment: `/comment/<comment_id>/delete/`
+
+# Tagging and Search Functionality
+
+## Features
+- Assign multiple tags to posts using django-taggit
+- Display tags in post detail and list views
+- Click a tag to view all posts with that tag
+- Search posts by title, content, or tags via search bar
+- Search results show matching posts dynamically
+
+## URLs
+- Search: `/search/?q=<query>`
+- Posts by tag: `/tags/<tag_slug>/`

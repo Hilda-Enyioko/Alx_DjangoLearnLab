@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post, Comment
+from django.db.models import Q
 
 # Registration
 def register(request):
@@ -35,6 +36,14 @@ class PostListView(ListView):
     context_object_name = "posts"
     ordering = ["-date_created"]
     paginate_by = 5
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        tag_slug = self.kwargs.get("tag_slug")
+        if tag_slug:
+            queryset = queryset.filter(tags__slug=tag_slug)
+        return queryset
+
 
 # View single post
 class PostDetailView(DetailView):
@@ -74,6 +83,20 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
+    
+
+# Search posts
+def SearchPostView(request):
+    query = request.GET.get('q')
+    results = []
+    if query:
+        results = Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
+    return render(request, "blog/search_results.html", {"results": results, "query": query})
+
     
 # Add comment to post
 @login_required

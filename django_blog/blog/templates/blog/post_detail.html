@@ -2,6 +2,14 @@
 <p>{{ object.content }}</p>
 <p>Author: {{ object.author }}</p>
 <p>Published: {{ object.date_created|date:"M d, Y" }}</p>
+<p>Tags:
+{% for tag in object.tags.all %}
+    <a href="{% url 'posts-by-tag' tag.slug %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+{% empty %}
+    No tags
+{% endfor %}
+</p>
+
 
 {% if user == object.author %}
     <a href="{% url 'post-update' object.pk %}">Edit</a>
