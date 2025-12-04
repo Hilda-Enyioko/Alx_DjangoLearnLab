@@ -13,12 +13,25 @@ This project implements user authentication using Django’s built-in auth views
 
 ## Features
 - List all posts (/posts/)
-- View individual post (/posts/<id>/)
-- Create post (authenticated users only) (/posts/new/)
-- Edit post (author only) (/posts/<id>/edit/)
-- Delete post (author only) (/posts/<id>/delete/)
+- View individual post (/post/<id>/)
+- Create post (authenticated users only) (/post/new/)
+- Edit post (author only) (/post/<id>/edit/)
+- Delete post (author only) (/post/<id>/delete/)
 
 ## Permissions
 - Any user can view posts.
 - Only logged-in users can create posts.
 - Only post authors can edit/delete their posts.
+
+# Comment Functionality
+
+## Features
+- Authenticated users can post comments on any blog post.
+- Authors can edit or delete their own comments.
+- Comments are displayed on the post detail page, newest first.
+- Permissions ensure only the comment author can edit/delete their comments.
+
+## URLs
+- Add comment: `/post/<post_id>/comments/new/`
+- Edit comment: `/comment/<comment_id>/edit/`
+- Delete comment: `/comment/<comment_id>/delete/`
