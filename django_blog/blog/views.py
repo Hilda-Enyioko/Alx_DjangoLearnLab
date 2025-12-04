@@ -29,21 +29,20 @@ def profile(request):
         request.user.save()
     return render(request, "blog/profile.html")
 
-# List all posts
-class PostListView(ListView):
+# List all posts by tag
+class PostByTagListView(ListView):
     model = Post
     template_name = "blog/post_list.html"
     context_object_name = "posts"
-    ordering = ["-date_created"]
     paginate_by = 5
-    
+    ordering = ["-date_created"]
+
     def get_queryset(self):
         queryset = super().get_queryset()
         tag_slug = self.kwargs.get("tag_slug")
         if tag_slug:
             queryset = queryset.filter(tags__slug=tag_slug)
         return queryset
-
 
 # View single post
 class PostDetailView(DetailView):
