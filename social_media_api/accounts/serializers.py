@@ -4,7 +4,7 @@ from .models import CustomUser
 
 User = CustomUser
 
-class UserResgistrationSerializer(serializers.ModelSerializer):
+class UserRegistrationSerializer(serializers.ModelSerializer):
     """
     Docstring for UserResgistrationSerializer:
     Serializer used for creating new user accounts.
@@ -34,7 +34,7 @@ class UserResgistrationSerializer(serializers.ModelSerializer):
         Runs before the create() method 
         """
         if attrs['password'] != attrs['password2']:
-            raise serializers.ValidateError({
+            raise serializers.ValidationError({
                 "password": "Passwords do not match"
             })
              
@@ -55,6 +55,9 @@ class UserResgistrationSerializer(serializers.ModelSerializer):
             email=validated_data.get['email'],
             password=validate_password['password']
         )
+
+        # Automatically create auth token
+        Token.objects.create(user=user)
         
         return user
     
