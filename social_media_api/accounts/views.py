@@ -15,7 +15,7 @@ class RegisterView(generics.CreateAPIView):
     Handles user registration
     """
     
-    serializer_class=UserResgistrationSerializer
+    serializer_class=UserRegistrationSerializer
     
 
 class LoginView(APIView):
