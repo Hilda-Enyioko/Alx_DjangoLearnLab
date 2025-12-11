@@ -1,8 +1,10 @@
 from rest_framework import serializers
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from .models import CustomUser
 
-User = CustomUser
+User = get_user_model()
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     """
@@ -50,10 +52,10 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         validated_data.pop('password2')             # Remove the unnecessary field
         
         # create user automatically hashes the password
-        user = User.objects.create_user(
+        user = get_user_model().objects.create_user(
             username=validated_data['username'],
-            email=validated_data.get['email'],
-            password=validate_password['password']
+            email=validated_data.get('email'),
+            password=validated_data['password']
         )
 
         # Automatically create auth token
