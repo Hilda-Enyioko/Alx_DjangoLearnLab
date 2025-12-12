@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets, permissions, filters
+from rest_framework import viewsets, permissions, filters, generics
 from rest_framework.pagination import PageNumberPagination
 from .serializers import PostSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly
@@ -39,4 +39,17 @@ class CommentViewSet(viewsets.ModelViewSet):
     pagination_class = CommentPagination
     
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)    
+        serializer.save(author=self.request.user)
+        
+
+class FeedView(generics.ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self, request):
+        user = self.request.user
+        following = user.following.all()
+        
+        return Post.objects.filter(
+            author__in=following
+        ).order_by("created_at")
