@@ -35,7 +35,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'author', 'title', 'content', 'created_at', 'comments', 'likes_count']
+        fields = ['id', 'author', 'title', 'content', 'created_at', 'comments', 'likes_count', 'is_liked']
         
     def get_is_liked(self, obj):
         """Check if the current user has liked the post"""

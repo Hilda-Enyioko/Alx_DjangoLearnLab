@@ -125,3 +125,12 @@ class ListFollowersView(generics.ListAPIView):
 
     def get_queryset(self):
         return self.request.user.followers.all()
+
+class TestAuthView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        return Response({
+            "username": request.user.username,
+            "message": "Token auth works!"
+        })

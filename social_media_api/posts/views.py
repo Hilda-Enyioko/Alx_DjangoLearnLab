@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, permissions, filters, generics, status
+from rest_framework import viewsets, permissions, filters, generics, status, views
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from .serializers import PostSerializer, CommentSerializer
@@ -134,3 +134,12 @@ class UnlikePostView(generics.DestroyAPIView):
             {'message': 'Post unliked successfully'}, 
             status=status.HTTP_200_OK
         )
+        
+class TestAuthView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        return Response({
+            "username": request.user.username,
+            "message": "Token auth works!"
+        })
