@@ -3,7 +3,7 @@ from rest_framework import viewsets, permissions, filters, generics
 from rest_framework.pagination import PageNumberPagination
 from .serializers import PostSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly
-from .models import Post, Comment
+from .models import Post, Comment, Like
 
 # Create your views here.
 class PostViewSet(viewsets.ModelViewSet):
@@ -53,3 +53,6 @@ class FeedView(generics.ListAPIView):
         return Post.objects.filter(
             author__in=following
         ).order_by("created_at")
+        
+
+class LikePostView(generics.CreateAPIView):
