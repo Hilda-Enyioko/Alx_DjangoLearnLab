@@ -119,7 +119,7 @@ class UnlikePostView(generics.DestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
     
     def delete(self, request, pk):
-        post = get_object_or_404(Post, pk=pk)
+        post = generics.get_object_or_404(Post, pk=pk)
         
         like = Like.objects.filter(post=post, liked_by=request.user).first()
         if not like:
