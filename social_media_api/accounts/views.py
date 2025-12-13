@@ -4,6 +4,7 @@ from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
+from notifications.views import create_notification
 
 from .models import User as CustomUser
 from .serializers import (
@@ -67,6 +68,13 @@ class FollowUserView(generics.GenericAPIView):
             )
 
         request.user.following.add(user_to_follow)
+        
+        create_notification(
+                recipient=user_to_follow,
+                actor=request.user,
+                verb="started following you",
+                message=f"{request.user.username} started following you."
+            )
 
         return Response(
             {"message": f"You are now following {user_to_follow.username}"},

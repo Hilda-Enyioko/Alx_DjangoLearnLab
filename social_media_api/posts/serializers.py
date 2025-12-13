@@ -31,7 +31,15 @@ class PostSerializer(serializers.ModelSerializer):
     author = serializers.CharField(source="author.username", read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
     likes_count = serializers.IntegerField(source='likes.count', read_only=True)
+    is_liked = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
         fields = ['id', 'author', 'title', 'content', 'created_at', 'comments', 'likes_count']
+        
+    def get_is_liked(self, obj):
+        """Check if the current user has liked the post"""
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return obj.likes.filter(id=request.user.id).exists()
+        return False

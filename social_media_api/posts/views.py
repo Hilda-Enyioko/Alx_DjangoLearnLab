@@ -6,6 +6,7 @@ from .serializers import PostSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly
 from .models import Post, Comment, Like
 from notifications.models import Notification
+from notifications.views import create_notification
 
 # Create your views here.
 class PostViewSet(viewsets.ModelViewSet):
@@ -27,6 +28,18 @@ class PostViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
         
+        if self.request.data.get('post'):
+            post = get_object_or_404(Post, id=self.request.data.get('post'))
+            # Notify Post Author of Comment
+            if post.author != self.request.user:
+                create_notification(
+                    recipient=post.author,
+                    actor=self.request.user,
+                    verb="commented on your post",
+                    target=post,
+                    message=f"{self.request.user.username} commented on your post."
+                )
+        
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all().order_by("created_at")
     serializer_class = CommentSerializer
@@ -42,6 +55,18 @@ class CommentViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+        
+        if self.request.data.get('post'):
+            post = get_object_or_404(Post, id=self.request.data.get('post'))
+            # Notify Post Author of Comment
+            if post.author != self.request.user:
+                create_notification(
+                    recipient=post.author,
+                    actor=self.request.user,
+                    verb="commented on your post",
+                    target=post,
+                    message=f"{self.request.user.username} commented on your post."
+                )
         
 
 class FeedView(generics.ListAPIView):
@@ -73,11 +98,12 @@ class LikePostView(generics.CreateAPIView):
     
         # Notify Post Author of Like
         if post.author != request.user:
-            Notification.objects.create(
+            create_notification(
                 recipient=post.author,
                 actor=request.user,
                 verb="liked your post",
-                target=post
+                target=post,
+                message=f"{request.user.username} liked your post."
             )
                       
         return Response(
