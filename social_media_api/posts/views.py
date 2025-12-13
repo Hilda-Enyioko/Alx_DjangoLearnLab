@@ -85,11 +85,11 @@ class LikePostView(generics.CreateAPIView):
     """
     permission_classes = [permissions.IsAuthenticated]
     
-    def post(self, request, post_id):
-        post = get_object_or_404(Post, id=post_id)
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
         
         # Prevent duplicate likes
-        like, created = Like.objects.get_or_create(post=post, liked_by=request.user)
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
         if not created:
             return Response(
                 {"error": "You have already liked this post."},
@@ -98,7 +98,7 @@ class LikePostView(generics.CreateAPIView):
     
         # Notify Post Author of Like
         if post.author != request.user:
-            create_notification(
+            Notification.objects.create(
                 recipient=post.author,
                 actor=request.user,
                 verb="liked your post",
@@ -118,8 +118,8 @@ class UnlikePostView(generics.DestroyAPIView):
     """
     permission_classes = [permissions.IsAuthenticated]
     
-    def delete(self, request, post_id):
-        post = get_object_or_404(Post, id=post_id)
+    def delete(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
         
         like = Like.objects.filter(post=post, liked_by=request.user).first()
         if not like:
