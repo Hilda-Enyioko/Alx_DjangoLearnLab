@@ -31,7 +31,6 @@ class Notification(models.Model):
     object_id = models.PositiveIntegerField(null=True, blank=True)
     target = GenericForeignKey('content_type', 'object_id')  # can point to any model instance
     timestamp = models.DateTimeField(auto_now_add=True)
-    message = models.TextField(blank=True, null=True)
     read = models.BooleanField(default=False)
     
     def __str__(self):

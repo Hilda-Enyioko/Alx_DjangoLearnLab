@@ -30,7 +30,8 @@ class PostSerializer(serializers.ModelSerializer):
 
     author = serializers.CharField(source="author.username", read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
+    likes_count = serializers.IntegerField(source='likes.count', read_only=True)
 
     class Meta:
         model = Post
-        fields = ['id', 'author', 'title', 'content', 'created_at', 'comments']
+        fields = ['id', 'author', 'title', 'content', 'created_at', 'comments', 'likes_count']
